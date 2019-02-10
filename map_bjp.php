@@ -98,7 +98,6 @@ require 'functions.php';
                                         </ul>
                                     </div>
                             </li>
-                            
 
                         </ul>
                     </div>
@@ -139,23 +138,17 @@ require 'functions.php';
                 <div class="row">
                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                             <div class="wrapper" style="width: 100%;">
-                    <iframe src="http://localhost:3000/public/dashboard/9a601890-0a9b-4211-b119-05f05991c3ca" frameborder="0"
-            width="100%"
-            height="1000"
-            allowtransparency>
+                    <iframe allowfullscreen="" id="wallsio-iframe" src="https://walls.io/e5jva?show_header=0" style="border:0;height:800px;width:100%"></iframe>
 
             </iframe>
-            <iframe src="http://localhost:3000/public/dashboard/7baf3f3e-c918-4257-a5cf-8e62af8a22a0" frameborder="0"
-            width="100%"
-            height="1000"
-            allowtransparency>
+
                     </div>
                 </div>
             </div>
             <!-- ============================================================== -->
             <!-- footer -->
             <!-- ============================================================== -->
-            
+           
             <!-- ============================================================== -->
             <!-- end footer -->
             <!-- ============================================================== -->
