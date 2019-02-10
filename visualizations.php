@@ -80,7 +80,13 @@ require 'functions.php';
                                 <div id="submenu-2" class="collapse submenu" style="">
                                     <ul class="nav flex-column">
                                         <li class="nav-item">
-                                            <a class="nav-link" href="modi_sub.php">Modi<span class="badge badge-secondary">Modi</span></a>
+                                            <a class="nav-link" href="modi_sub.php">Past Keywords<span class="badge badge-secondary">Modi</span></a>
+                                        </li>
+
+                                    </ul>
+                                    <ul class="nav flex-column">
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="keywords_sub.php">Subscribed keywords<span class="badge badge-secondary">Modi</span></a>
                                         </li>
 
                                     </ul>
