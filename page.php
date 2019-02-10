@@ -174,7 +174,13 @@ require 'functions.php';
                                   <!--    <label for="inputText3" class="col-form-label">Input Text</label>-->
                                       <input id="inputText3" type="text" class="form-control" name="search">
                                   </div>
-                                  <button type="submit" class="btn btn-primary">Primary</button>
+                                  <button type="submit" class="btn btn-primary">Search</button>
+                                  <?php
+                                    if(isset($_GET["search"])) {
+                                      echo "<a class='btn btn-primary' href='visualizations.php'>View Visualizations</a>";
+                                    }
+
+                                  ?>
                               </form>
                           </div>
                       </div>
