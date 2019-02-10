@@ -458,108 +458,114 @@ John Abraham</h5>
                 <!-- end pageheader -->
                 <!-- ============================================================== -->
                 <div class="row">
+                  <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+
+                      <div class="card">
+                          <h5 class="card-header">Enter Search Term: </h5>
+                          <div class="card-body">
+                              <form name="search" method="get">
+                                  <div class="form-group">
+                                  <!--    <label for="inputText3" class="col-form-label">Input Text</label>-->
+                                      <input id="inputText3" type="text" class="form-control" name="search">
+                                  </div>
+                                  <button type="submit" class="btn btn-primary">Primary</button>
+                              </form>
+                          </div>
+                      </div>
+                  </div>
                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+
                         <?php
+                        if(isset($_GET["search"])) {
+                          $keyword=$_GET["search"];
+                          $keywordurl=str_replace(" ","+",$keyword);
+                          $url ="https://api.social-searcher.com/v2/search?q=" . $keywordurl . "&key=5125c917b806a166cfdf1865c9ab8f47&fields=posted,text,sentiment,popularity,tags,user_mentions,user&limit=100&network=web,twitter,reddit,instagram&lang=en";
+                          $res=CallAPI("GET",$url);
+                          $jsonres=json_decode($res,true);
+                          $x=$jsonres["posts"];
+                          foreach($x as $r) {
+                            $usermentions="";
+                            $tags="";
+                            $count=0;
+                            $posted="";
+                            $text="";
+                            $sentiment="";
+                            $username="";
+                            $imageurl="";
+                            $location="";
 
-                        $res=CallAPI("GET","https://api.social-searcher.com/v2/search?q=Modi&key=5125c917b806a166cfdf1865c9ab8f47&fields=posted,text,sentiment,popularity,tags,user_mentions,user&limit=100&network=web,twitter,reddit,instagram&lang=en");
-                        //var_dump($res);
-                        $jsonres=json_decode($res,true);
-                        //echo "\n\n\n\nvardump3 array";
-                        $x=$jsonres["posts"];
+                            foreach($r as $k=>$v) {
+                              if($k=="user_mentions") {
+                                foreach($v as $iter) {
+                                  $usermentions.=$iter["text"];
+                                  $usermentions.=" ";
+                                }
+                              }
+                              else if($k=="tags") {
+                                foreach($v as $iter) {
+                                  $tags.=$iter["text"];
+                                  $tags.=" ";
+                                }
+                              }
+                              else if($k=="popularity") {
+                                foreach($v as $iter) {
+                                  $count+=$iter["count"];
+                                }
+                              }
 
-                        //print_r($x);
-                        foreach($x as $r) {
-                          $usermentions="";
-                          $tags="";
-                          $count=0;
-                          $posted="";
-                          $text="";
-                          $sentiment="";
-                          $username="";
-                          $imageurl="";
-                          $location="";
-                          foreach($r as $k=>$v) {
-                            //var_dump($k);
-
-                            if($k=="user_mentions") {
-
-                              foreach($v as $iter) {
-                                $usermentions.=$iter["text"];
-                                $usermentions.=" ";
+                              else if($k=="posted") {
+                                $posted=$v;
+                              }
+                              else if($k == "text") {
+                                $text=$v;
+                              }
+                              else if($k=="sentiment"){
+                                $sentiment=$v;
+                              }
+                              else if($k=="user") {
+                                  $username=$v["name"];
+                                  $imageurl=$v["image"];
+                                  if(!isset($v["location"]))
+                                    $location="Mumbai, India";
+                                  else
+                                    $location=$v["location"];
+                              }
+                              else {
+                                echo("else");
                               }
                             }
-                            else if($k=="tags") {
-                              foreach($v as $iter) {
-                                $tags.=$iter["text"];
-                                $tags.=" ";
-                              }
-                            }
-                            else if($k=="popularity") {
-                            //  var_dump($v);
-                              foreach($v as $iter) {
-                                $count+=$iter["count"];
-                              }
-                            }
-
-                            else if($k=="posted") {
-                              $posted=$v;
-                            }
-                            else if($k == "text") {
-                              $text=$v;
-                            }
-                            else if($k=="sentiment"){
-                              $sentiment=$v;
-                            }
-                            else if($k=="user") {
-                                $username=$v["name"];
-                                $imageurl=$v["image"];
-                                if(!isset($v["location"]))
-                                  $location="Mumbai, India";
-                                else
-                                  $location=$v["location"];
-                            }
-                            else {
-                              echo("else");
-                              //echo ($v);
-                              //echo("\n");
-                            }
-                            //echo $usermentions,$tags,$sentiment,$text,$posted,$count;
-                            //echo "\n";
-                          }
-                        //  $sql="insert into posts(posted,text,sentiment,count,usermentions,tags) values(" . $posted . "," . $text . "," . $sentiment . "," . $count . "," . $usermentions . "," . $tags . ")";
-                        $sql="insert into posts(posted,text,sentiment,count,usermentions,tags,username,imageurl,location) values( '$posted' ,'$text','$sentiment',$count,'$usermentions', '$tags','$username', '$imageurl', '$location')";
-                        $res=  $con->query($sql);
-                      }
-                        ?>
-                        <?php
-                        $sql="select * from posts order by posted desc limit 20";
-                        $result = $con->query($sql);
-                        if ($result->num_rows > 0) {
-                            // output data of each row
-                            while($row = $result->fetch_assoc()) {
-                              if(!isset($v["imageurl"]))
-                                $imagepath=$row["imageurl"];
-                              else
-                                $imagepath="./avatar.png";
-                              echo "
-                              <div class='card'>
-                                  <div class='card-header'>
-                                      " . $row["posted"]  . " - " . $row["location"] ."
-                                  </div>
-                                  <div class='card-body'>
-                                      <blockquote class='blockquote mb-0'>
-                                      <img src=". $imagepath .">
-                                          <p>"  . $row["text"] .  "</p>
-                                          <footer class='blockquote-footer'>
-                                              <cite title='Source Title'>" . $row["username"] ." </cite>
-                                          </footer>
-                                      </blockquote>
-                                  </div>
-                              </div>";
-                            }
-                        } else {
-                            echo "0 results";
+                          $sql="insert into posts(posted,text,sentiment,count,usermentions,tags,username,imageurl,location,keyword) values( '$posted' ,'$text','$sentiment',$count,'$usermentions', '$tags','$username', '$imageurl', '$location','$keyword')";
+                          $res=  $con->query($sql);
                         }
+                          $sql="select * from posts order by posted desc limit 50";
+                          $result = $con->query($sql);
+                          if ($result->num_rows > 0) {
+                              // output data of each row
+                              while($row = $result->fetch_assoc()) {
+                                if(!isset($v["imageurl"]))
+                                  $imagepath=$row["imageurl"];
+                                else
+                                  $imagepath="./avatar.png";
+                                echo "
+                                <div class='card'>
+                                    <div class='card-header'>
+                                        " . $row["posted"]  . " - " . $row["location"] ."
+                                    </div>
+                                    <div class='card-body'>
+                                        <blockquote class='blockquote mb-0'>
+                                        <img src=". $imagepath .">
+                                            <p>"  . $row["text"] .  "</p>
+                                            <footer class='blockquote-footer'>
+                                                <cite title='Source Title'>" . $row["username"] ." </cite>
+                                            </footer>
+                                        </blockquote>
+                                    </div>
+                                </div>";
+                              }
+                          } else {
+                              echo "0 results";
+                          }
+                      }
                         ?>
 
                     </div>
