@@ -297,7 +297,7 @@ John Abraham</h5>
                                             <a class="nav-link" href="blank-page.html">Blank Page</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" href="blank-page-header.html">Blank Page Header</a>
+                                            <a class="nav-link" href="blank-page-header.html">Some Detailed Analytics on Your Search</a>
                                         </li>
                                         <li class="nav-item">
                                             <a class="nav-link" href="login.html">Login</a>
@@ -440,14 +440,14 @@ John Abraham</h5>
                 <div class="row">
                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <div class="page-header">
-                            <h2 class="pageheader-title">Blank Pageheader </h2>
+                            <h2 class="pageheader-title">Some Detailed Analytics on your search term </h2>
                             <p class="pageheader-text">Proin placerat ante duiullam scelerisque a velit ac porta, fusce sit amet vestibulum mi. Morbi lobortis pulvinar quam.</p>
                             <div class="page-breadcrumb">
                                 <nav aria-label="breadcrumb">
                                     <ol class="breadcrumb">
                                         <li class="breadcrumb-item"><a href="#" class="breadcrumb-link">Dashboard</a></li>
                                         <li class="breadcrumb-item"><a href="#" class="breadcrumb-link">Pages</a></li>
-                                        <li class="breadcrumb-item active" aria-current="page">Blank Pageheader</li>
+                                        <li class="breadcrumb-item active" aria-current="page">Analysis</li>
                                     </ol>
                                 </nav>
                             </div>
@@ -463,7 +463,13 @@ John Abraham</h5>
                     <iframe src="http://localhost:3000/public/dashboard/9a601890-0a9b-4211-b119-05f05991c3ca" frameborder="0"
             width="100%"
             height="1000"
-            allowtransparency></iframe>
+            allowtransparency>
+                
+            </iframe>
+            <iframe src="http://localhost:3000/public/dashboard/7baf3f3e-c918-4257-a5cf-8e62af8a22a0" frameborder="0"
+            width="100%"
+            height="1000"
+            allowtransparency>
                     </div>
                 </div>
             </div>
