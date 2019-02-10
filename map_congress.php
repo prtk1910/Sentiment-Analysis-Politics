@@ -21,13 +21,13 @@ require 'functions.php';
     <!-- ============================================================== -->
     <!-- main wrapper -->
     <!-- ============================================================== -->
-    <div class="dashboard-main-wrapper">
+   <div class="dashboard-main-wrapper">
         <!-- ============================================================== -->
         <!-- navbar -->
         <!-- ============================================================== -->
        <div class="dashboard-header">
             <nav class="navbar navbar-expand-lg bg-white fixed-top">
-                <a class="navbar-brand" href="visualizations.php">Pythrons</a>
+                <a class="navbar-brand" href="page.php">Pythrons</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -54,7 +54,7 @@ require 'functions.php';
       <div class="nav-left-sidebar sidebar-dark">
             <div class="menu-list">
                 <nav class="navbar navbar-expand-lg navbar-light">
-                    <a class="d-xl-none d-lg-none" href="visualizations.php">Dashboard</a>
+                    <a class="d-xl-none d-lg-none" href="page.php">Dashboard</a>
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
@@ -65,6 +65,14 @@ require 'functions.php';
                             </li>
                             <li class="nav-item ">
                                 <a class="nav-link active" href="visualizations.php" data-toggle="collapse" aria-expanded="false" data-target="#submenu-1" aria-controls="submenu-1"><i class="fas fa-fw fa-chart-pie"></i>Visualizations<span class="badge badge-success">6</span></a>
+                                <div id="submenu-1" class="collapse submenu" style="">
+                                    <ul class="nav flex-column">
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="visualizations.php">Statistics<span class="badge badge-secondary">Statistics</span></a>
+                                        </li>
+
+                                    </ul>
+                                </div>
 
                             </li>
                             <li class="nav-item">
