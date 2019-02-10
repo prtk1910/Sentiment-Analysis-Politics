@@ -80,7 +80,7 @@ require 'functions.php';
                             </li>
 
                             <li class="nav-item">
-                                <a class="nav-link" href="map.php" data-toggle="collapse" aria-expanded="false" data-target="#submenu-5" aria-controls="submenu-5"><i class="fas fa-fw fa-table"></i>Live Map Feed</a>
+                                <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-5" aria-controls="submenu-5"><i class="fas fa-fw fa-table"></i>Live Map Feed</a>
                                     <div id="submenu-5" class="collapse submenu" style="">
                                         <ul class="nav flex-column">
                                             <li class="nav-item">
@@ -138,8 +138,7 @@ require 'functions.php';
                 <div class="row">
                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                             <div class="wrapper" style="width: 100%;">
-                   
-                                    <iframe src="http://localhost:3000/public/dashboard/9a601890-0a9b-4211-b119-05f05991c3ca" frameborder="0"
+                    <iframe src="http://localhost:3000/public/dashboard/9a601890-0a9b-4211-b119-05f05991c3ca" frameborder="0"
             width="100%"
             height="1000"
             allowtransparency>
@@ -149,9 +148,6 @@ require 'functions.php';
             width="100%"
             height="1000"
             allowtransparency>
-        </iframe>
-            
-
                     </div>
                 </div>
             </div>
