@@ -107,6 +107,20 @@ require 'functions.php';
                                     </div>
                             </li>
 
+                            <li class="nav-item">
+                                <a class="nav-link" href="news.php" data-toggle="collapse" aria-expanded="false" data-target="#submenu-4" aria-controls="submenu-4"><i class="fas fa-fw fa-file"></i>Live News Feed</a>
+                                    <div id="submenu-4" class="collapse submenu" style="">
+                                        <ul class="nav flex-column">
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="news.php">Rajya Sabha TV<span class="badge badge-secondary">Rajya Sabha TV/</span></a>
+                                            </li>
+    
+
+
+                                        </ul>
+                                    </div>
+                            </li>
+
                         </ul>
                     </div>
                 </nav>
@@ -162,13 +176,15 @@ require 'functions.php';
                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
 
                         <?php
+                        $string = "";
                         if(isset($_GET["search"])) {
                           $keyword=$_GET["search"];
                           $keywordurl=str_replace(" ","+",$keyword);
-                          $url ="https://api.social-searcher.com/v2/search?q=" . $keywordurl . "&key=5125c917b806a166cfdf1865c9ab8f47&fields=posted,text,sentiment,popularity,tags,user_mentions,user&limit=100&network=web,twitter,reddit,instagram&lang=en";
+                          $url ="https://api.social-searcher.com/v2/search?q=" . $keywordurl . "&key=5125c917b806a166cfdf1865c9ab8f47&fields=posted,text,sentiment,popularity,tags,user_mentions,user&limit=50&network=web,twitter,reddit,instagram&lang=en";
                           $res=CallAPI("GET",$url);
                           $jsonres=json_decode($res,true);
                           $x=$jsonres["posts"];
+                          $stop=0;
                           foreach($x as $r) {
                             $usermentions="";
                             $tags="";
@@ -179,6 +195,7 @@ require 'functions.php';
                             $username="";
                             $imageurl="";
                             $location="";
+
 
                             foreach($r as $k=>$v) {
                               if($k=="user_mentions") {
@@ -204,6 +221,11 @@ require 'functions.php';
                               }
                               else if($k == "text") {
                                 $text=$v;
+                                if($stop<10) {
+                                  $string .= $text;
+                                  $string .= " ";
+                                  $stop++;
+                                }
                               }
                               else if($k=="sentiment"){
                                 $sentiment=$v;
@@ -251,7 +273,47 @@ require 'functions.php';
                           } else {
                               echo "0 results";
                           }
+                        //  echo $string;
+                          $result=WatsonCall($string,$keyword);
+                          if(isset($result)) {
+                            $jsonres=json_decode($result,true);
+
+                            $x=$jsonres["keywords"];
+                            $e=$jsonres["emotion"];
+                            $keywords="";
+                            $sadness="";
+                            $joy="";
+                            $fear="";
+                            $disgust="";
+                            $anger="";
+                            foreach($x as $r) {
+                              foreach($r as $k=>$v) {
+                                if($k=="text") {
+                                  $keywords .= $v;
+                                  $keywords .= " ";
+                                }
+                              }
+                            }
+                            foreach($e as $r) {
+                              foreach($r as $k=>$v) {
+                                if($k=="emotion") {
+                                  $sadness = $v["emotion"]["sadness"];
+                                  $joy = $v["emotion"]["joy"];
+                                  $fear = $v["emotion"]["fear"];
+                                  $disgust = $v["emotion"]["disgust"];
+                                  $anger = $v["emotion"]["anger"];
+                                }
+                              }
+
+                            }
+                            $sql="insert into keywords(keyword,sadness,joy,fear,disgust,anger,words) values( '$keyword' , '$sadness','$joy', '$fear', '$disgust','$anger','$keywords')";
+                            $res=  $con->query($sql);
+                            echo $res;
+                          }
                       }
+
+                      //$string = 'RT @shibuchandran28: Day by day love for Modi keeps multiplying....#TNWelcomesModi';
+
                         ?>
 
                     </div>

@@ -21,7 +21,7 @@ require 'functions.php';
     <!-- ============================================================== -->
     <!-- main wrapper -->
     <!-- ============================================================== -->
-   <div class="dashboard-main-wrapper">
+    <div class="dashboard-main-wrapper">
         <!-- ============================================================== -->
         <!-- navbar -->
         <!-- ============================================================== -->
@@ -106,19 +106,6 @@ require 'functions.php';
                                         </ul>
                                     </div>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="news.php" data-toggle="collapse" aria-expanded="false" data-target="#submenu-4" aria-controls="submenu-4"><i class="fas fa-fw fa-file"></i>Live News Feed</a>
-                                    <div id="submenu-4" class="collapse submenu" style="">
-                                        <ul class="nav flex-column">
-                                            <li class="nav-item">
-                                                <a class="nav-link" href="news.php">Rajya Sabha TV<span class="badge badge-secondary">Rajya Sabha TV/</span></a>
-                                            </li>
-    
-
-
-                                        </ul>
-                                    </div>
-                            </li>
 
                         </ul>
                     </div>
@@ -157,11 +144,163 @@ require 'functions.php';
                 <!-- end pageheader -->
                 <!-- ============================================================== -->
                 <div class="row">
-                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                            <div class="wrapper" style="width: 100%;">
-                    <iframe allowfullscreen="" id="wallsio-iframe" src="https://walls.io/h4234?show_header=0" style="border:0;height:800px;width:100%"></iframe>
+                  <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
 
-            </iframe>
+                      <div class="card">
+                          <h5 class="card-header">Enter Search Term: </h5>
+                          <div class="card-body">
+                              <form name="search" method="get">
+                                  <div class="form-group">
+                                  <!--    <label for="inputText3" class="col-form-label">Input Text</label>-->
+                                      <input id="inputText3" type="text" class="form-control" name="search">
+                                  </div>
+                                  <button type="submit" class="btn btn-primary">Primary</button>
+                              </form>
+                          </div>
+                      </div>
+                  </div>
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+
+                        <?php
+                        $string = "";
+                        if(isset($_GET["search"])) {
+                          $keyword=$_GET["search"];
+                          $keywordurl=str_replace(" ","+",$keyword);
+                          $url ="https://api.social-searcher.com/v2/search?q=" . $keywordurl . "&key=5125c917b806a166cfdf1865c9ab8f47&fields=posted,text,sentiment,popularity,tags,user_mentions,user&limit=50&network=web,twitter,reddit,instagram&lang=en";
+                          $res=CallAPI("GET",$url);
+                          $jsonres=json_decode($res,true);
+                          $x=$jsonres["posts"];
+                          $stop=0;
+                          foreach($x as $r) {
+                            $usermentions="";
+                            $tags="";
+                            $count=0;
+                            $posted="";
+                            $text="";
+                            $sentiment="";
+                            $username="";
+                            $imageurl="";
+                            $location="";
+
+
+                            foreach($r as $k=>$v) {
+                              if($k=="user_mentions") {
+                                foreach($v as $iter) {
+                                  $usermentions.=$iter["text"];
+                                  $usermentions.=" ";
+                                }
+                              }
+                              else if($k=="tags") {
+                                foreach($v as $iter) {
+                                  $tags.=$iter["text"];
+                                  $tags.=" ";
+                                }
+                              }
+                              else if($k=="popularity") {
+                                foreach($v as $iter) {
+                                  $count+=$iter["count"];
+                                }
+                              }
+
+                              else if($k=="posted") {
+                                $posted=$v;
+                              }
+                              else if($k == "text") {
+                                $text=$v;
+                                if($stop<10) {
+                                  $string .= $text;
+                                  $string .= " ";
+                                  $stop++;
+                                }
+                              }
+                              else if($k=="sentiment"){
+                                $sentiment=$v;
+                              }
+                              else if($k=="user") {
+                                  $username=$v["name"];
+                                  $imageurl=$v["image"];
+                                  if(!isset($v["location"]))
+                                    $location="Mumbai, India";
+                                  else
+                                    $location=$v["location"];
+                              }
+                              else {
+                                echo("else");
+                              }
+                            }
+                          $sql="insert into posts(posted,text,sentiment,count,usermentions,tags,username,imageurl,location,keyword) values( '$posted' ,'$text','$sentiment',$count,'$usermentions', '$tags','$username', '$imageurl', '$location','$keyword')";
+                          $res=  $con->query($sql);
+                        }
+                          $sql="select * from posts order by posted desc limit 50";
+                          $result = $con->query($sql);
+                          if ($result->num_rows > 0) {
+                              // output data of each row
+                              while($row = $result->fetch_assoc()) {
+                                if(!isset($v["imageurl"]))
+                                  $imagepath=$row["imageurl"];
+                                else
+                                  $imagepath="./avatar.png";
+                                echo "
+                                <div class='card'>
+                                    <div class='card-header'>
+                                        " . $row["posted"]  . " - " . $row["location"] ."
+                                    </div>
+                                    <div class='card-body'>
+                                        <blockquote class='blockquote mb-0'>
+                                        <img src=". $imagepath .">
+                                            <p>"  . $row["text"] .  "</p>
+                                            <footer class='blockquote-footer'>
+                                                <cite title='Source Title'>" . $row["username"] ." </cite>
+                                            </footer>
+                                        </blockquote>
+                                    </div>
+                                </div>";
+                              }
+                          } else {
+                              echo "0 results";
+                          }
+                        //  echo $string;
+                          $result=WatsonCall($string,$keyword);
+                          if(isset($result)) {
+                            $jsonres=json_decode($result,true);
+
+                            $x=$jsonres["keywords"];
+                            $e=$jsonres["emotion"];
+                            $keywords="";
+                            $sadness="";
+                            $joy="";
+                            $fear="";
+                            $disgust="";
+                            $anger="";
+                            foreach($x as $r) {
+                              foreach($r as $k=>$v) {
+                                if($k=="text") {
+                                  $keywords .= $v;
+                                  $keywords .= " ";
+                                }
+                              }
+                            }
+                            foreach($e as $r) {
+                              foreach($r as $k=>$v) {
+                                if($k=="emotion") {
+                                  $sadness = $v["emotion"]["sadness"];
+                                  $joy = $v["emotion"]["joy"];
+                                  $fear = $v["emotion"]["fear"];
+                                  $disgust = $v["emotion"]["disgust"];
+                                  $anger = $v["emotion"]["anger"];
+                                }
+                              }
+
+                            }
+                            $sql="insert into keywords(keyword,sadness,joy,fear,disgust,anger,words) values( '$keyword' , '$sadness','$joy', '$fear', '$disgust','$anger','$keywords')";
+                            $res=  $con->query($sql);
+                            echo $res;
+                          }
+                      }
+
+                      //$string = 'RT @shibuchandran28: Day by day love for Modi keeps multiplying....#TNWelcomesModi';
+
+                        ?>
 
                     </div>
                 </div>

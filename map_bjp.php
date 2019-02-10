@@ -106,6 +106,19 @@ require 'functions.php';
                                         </ul>
                                     </div>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="news.php" data-toggle="collapse" aria-expanded="false" data-target="#submenu-4" aria-controls="submenu-4"><i class="fas fa-fw fa-file"></i>Live News Feed</a>
+                                    <div id="submenu-4" class="collapse submenu" style="">
+                                        <ul class="nav flex-column">
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="news.php">Rajya Sabha TV<span class="badge badge-secondary">Rajya Sabha TV/</span></a>
+                                            </li>
+    
+
+
+                                        </ul>
+                                    </div>
+                            </li>
 
                         </ul>
                     </div>
