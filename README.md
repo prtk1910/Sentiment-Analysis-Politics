@@ -7,7 +7,8 @@
   <img src="Screenshot_20190210_151254.png"/>
   <img src="Screenshot_20190210_151324.png"/>
 </p>
+
 ### Developers
-- [Milind Shah](https://github.com/mlndshh)
-- [Keval Nagda](https://github.com/pumpkinman008)
-- [Pratik Mulchandani](https://github.com/prtk1910)
+[Milind Shah](https://github.com/mlndshh)
+[Keval Nagda](https://github.com/pumpkinman008)
+[Pratik Mulchandani](https://github.com/prtk1910)
